@@ -6,10 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "SpringBootREST2", url = "http://localhost:9050")
+@FeignClient(value = "SpringBootREST2", url = "http://localhost:9050/orders/v1")
 public interface RestFeignService {
 
-    @GetMapping(value = "/orders/v1/getMovieDetails/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getMovieDetails/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
     Movie getMovieDetailsFeign(@PathVariable("movieId") Integer movieId);
 
 }

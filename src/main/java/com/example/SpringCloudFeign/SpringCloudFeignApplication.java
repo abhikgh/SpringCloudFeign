@@ -22,6 +22,6 @@ public class SpringCloudFeignApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		Movie movie = restFeignService.getMovieDetailsFeign(100);
-		System.out.println(movie);
+		System.out.println(movie.getMovieName() + "-" + movie.getDirector());
 	}
 }

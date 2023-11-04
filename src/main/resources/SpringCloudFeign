@@ -17,10 +17,58 @@ Declarative REST Client. OpenFeign creates a dynamic implementation of an interf
 
 @SpringBootApplication
 @EnableFeignClients
-public class SpringCloudFeignApplication {
+public class SpringCloudFeignApplication implements CommandLineRunner{
+
+	@Autowired
+	private RestFeignService restFeignService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringCloudFeignApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		Movie movie = restFeignService.getMovieDetailsFeign(100);
+		System.out.println(movie.getMovieName() + "-" + movie.getDirector());
+	}
+}
+
+
+@FeignClient(value = "SpringBootREST2", url = "http://localhost:9050/orders/v1")
+public interface RestFeignService {
+
+    @GetMapping(value = "/getMovieDetails/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    Movie getMovieDetailsFeign(@PathVariable("movieId") Integer movieId);
+
+}
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Movie {
+
+	@JsonProperty("movieId")
+	private Integer movieId;
+
+	@JsonProperty("movieName")
+	private String movieName;
+
+	@JsonProperty("director")
+	private String director;
+
+	@JsonProperty("genre")
+	private String genre;
+
+	@JsonProperty("hero")
+	private String hero;
+
+	@JsonProperty("year")
+	private String year;
+
+	@JsonProperty("nationalAward")
+	private Boolean nationalAward;
 }
