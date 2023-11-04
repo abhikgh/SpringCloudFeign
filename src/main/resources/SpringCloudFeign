@@ -1,0 +1,26 @@
+spring-cloud-config
+spring-cloud-stream
+spring-cloud-feign
+
+Spring Cloud Feign
+===========================
+
+OpenFeign
+---------------------
+Declarative REST Client. OpenFeign creates a dynamic implementation of an interface decorated with JAX-RS or Spring MVC annotations.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
+
+
+@SpringBootApplication
+@EnableFeignClients
+public class SpringCloudFeignApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringCloudFeignApplication.class, args);
+	}
+
+}
