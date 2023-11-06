@@ -1,0 +1,19 @@
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 50000
+        readTimeout: 50000
+        loggerLevel: basic
+  hystrix:
+    enabled: true
+
+server:
+  port: 8071
+
+logging:
+  level:
+    com:
+      example:
+        SpringCloudFeign:
+          service: INFO
