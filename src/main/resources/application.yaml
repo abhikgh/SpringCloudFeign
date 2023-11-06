@@ -5,8 +5,6 @@ feign:
         connectTimeout: 50000
         readTimeout: 50000
         loggerLevel: basic
-  hystrix:
-    enabled: true
 
 server:
   port: 8071

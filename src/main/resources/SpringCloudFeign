@@ -9,6 +9,7 @@ OpenFeign
 ---------------------
 Declarative REST Client. OpenFeign creates a dynamic implementation of an interface decorated with JAX-RS or Spring MVC annotations.
 
+<!-- Openfeign -->
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -33,8 +34,7 @@ public class SpringCloudFeignApplication implements CommandLineRunner{
 	}
 }
 
-
-@FeignClient(value = "SpringBootREST2", url = "http://localhost:9050/orders/v1")
+@FeignClient(value = "SpringBootREST2", url = "http://localhost:9050/orders/v1", configuration = CloudConfig.class)
 public interface RestFeignService {
 
     @GetMapping(value = "/getMovieDetails/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
