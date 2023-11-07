@@ -1,6 +1,7 @@
 spring-cloud-config
 spring-cloud-stream
 spring-cloud-feign
+spring-cloud-sleuth
 
 Spring Cloud Feign
 ===========================
@@ -72,3 +73,59 @@ public class Movie {
 	@JsonProperty("nationalAward")
 	private Boolean nationalAward;
 }
+
+
+Spring Cloud Sleuth + Zipkin :: Distributed Tracing service
+=================================================================
+
+Spring cloud Sleuth  :: logs are printed in the following format − [application-name,traceid,spanid,zipkin-export]
+
+Zipkin :: distributed tracing service that visualizes the Spring Cloud Sleuth logs and generates traces
+
+[Span reported: 33d5af6955caf017:33d5af6955caf017:0:1 - getAllMovies ]
+
+Zipkin components :
+    Collector—collects data through HTTP / Kafka, validates data and passes to storage service.
+    Storage —you can define any common database such as Cassandra, ElasticSearch, or MySQL.
+    Search —supports flexible queries on distributed trace data.
+    Web UI—lets you visualize data and perform searches.
+
+    Java
+    Single Process
+
+Add Spring Cloud Sleuth and Zipkin dependency and Spring Cloud dependency mangement in pom of SpringREST2 and SpringRESTClient3
+
+        <!--Spring Cloud Sleuth -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+         <!-- Zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <version>2.2.8.RELEASE</version>
+        </dependency>
+
+         <dependencyManagement>
+                 <dependencies>
+                     <dependency>
+                         <groupId>org.springframework.cloud</groupId>
+                         <artifactId>spring-cloud-dependencies</artifactId>
+                         <version>2021.0.0</version>
+                         <type>pom</type>
+                         <scope>import</scope>
+                     </dependency>
+                 </dependencies>
+         </dependencyManagement>
+
+
+            Run Zipkin
+            -------------------
+            E:\Softwares> java -jar zipkin-server-2.12.9-exec.jar
+            OR
+            Start Docker Desktop
+            gitbash > docker run -d -p 9411:9411 openzipkin/zipkin
+
+http://localhost:9411/zipkin/
