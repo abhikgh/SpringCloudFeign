@@ -74,6 +74,7 @@ public class Movie {
 	private Boolean nationalAward;
 }
 
+---------------------------------------------------------------------------------------------------------
 
 Spring Cloud Sleuth + Zipkin :: Distributed Tracing service
 =================================================================
@@ -129,3 +130,78 @@ Add Spring Cloud Sleuth and Zipkin dependency and Spring Cloud dependency mangem
             gitbash > docker run -d -p 9411:9411 openzipkin/zipkin
 
 http://localhost:9411/zipkin/
+
+---------------------------------------------------------------------------------------------------------
+
+Resilience4J. CircuitBreaker
+============================
+
+<resilience4j.version>1.7.0</resilience4j.version>
+
+<!-- Resilience4j  -->
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-spring-boot2</artifactId>
+    <version>${resilience4j.version}</version>
+</dependency>
+
+<!-- Resilience4j-all -->
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-all</artifactId>
+    <version>${resilience4j.version}</version>
+</dependency>
+
+resilience4j:
+  ratelimiter:
+    instances:
+      basic:
+        limitForPeriod: 2
+        limitRefreshPeriod: 1s # 2RPS
+        timeoutDuration: 10s     #time to acquire permission from RateLimiter before erroring out.
+  circuitbreaker:
+    configs:
+      shared:
+        register-health-indicator: true
+        sliding-window-type: count_based
+        sliding-window-size: 10
+        failure-rate-threshold: 70 #Circuitbreaker will open if 70% of the last 10 calls failed
+        slow-call-rate-threshold: 40
+        slow-call-duration-threshold: 2s
+        permitted-number-of-calls-in-half-open-state: 1
+        max-wait-duration-in-half-open-state: 10s
+        wait-duration-in-open-state: 10s
+        writable-stack-trace-enabled: true
+        automatic-transition-from-open-to-half-open-enabled: true
+    instances:
+      example:
+        base-config: shared
+
+//Resilience4j :: Circuit-Breaker
+@CircuitBreaker(name = "example", fallbackMethod = "fallback")
+public List<Heroes> heroesSupplierElseCircuitBreakWithFallback() {
+    return heroesRepository.findAll();
+}
+
+public List<Heroes> fallback(Exception exception) {
+    return new ArrayList<>();
+}
+
+
+---------------------------------------------------------------------------------------------------------
+
+Spring Cloud Sleuth + Zipkin
+==========================================
+
+     <!--Spring Cloud Sleuth -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+         <!-- Zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <version>2.2.8.RELEASE</version>
+        </dependency>

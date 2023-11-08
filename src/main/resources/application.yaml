@@ -15,3 +15,29 @@ logging:
       example:
         SpringCloudFeign:
           service: INFO
+
+
+resilience4j:
+  ratelimiter:
+    instances:
+      basic:
+        limitForPeriod: 2
+        limitRefreshPeriod: 1s # 2RPS
+        timeoutDuration: 10s     #time to acquire permission from RateLimiter before erroring out.
+  circuitbreaker:
+    configs:
+      shared:
+        register-health-indicator: true
+        sliding-window-type: count_based
+        sliding-window-size: 10
+        failure-rate-threshold: 70 #Circuitbreaker will open if 70% of the last 10 calls failed
+        slow-call-rate-threshold: 40
+        slow-call-duration-threshold: 2s
+        permitted-number-of-calls-in-half-open-state: 1
+        max-wait-duration-in-half-open-state: 10s
+        wait-duration-in-open-state: 10s
+        writable-stack-trace-enabled: true
+        automatic-transition-from-open-to-half-open-enabled: true
+    instances:
+      example:
+        base-config: shared
