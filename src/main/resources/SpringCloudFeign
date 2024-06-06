@@ -3,12 +3,8 @@ spring-cloud-stream
 spring-cloud-feign
 spring-cloud-sleuth
 
-Spring Cloud Feign
+Spring Cloud Feign (FeignClient)
 ===========================
-
-OpenFeign
----------------------
-Declarative REST Client. OpenFeign creates a dynamic implementation of an interface decorated with JAX-RS or Spring MVC annotations.
 
 <!-- Openfeign -->
 <dependency>
